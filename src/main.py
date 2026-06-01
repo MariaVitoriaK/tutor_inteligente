@@ -1,33 +1,58 @@
 # src/main.py
+import sys
+import os
+
+# Garante que o Python consegue encontrar o módulo de agentes corretamente
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from agentes import AgenteRecuperador, AgenteProfessor
 
 def iniciar_tutor():
-    # Instanciando (criando) os nossos agentes
-    recuperador = AgenteRecuperador()
-    professor = AgenteProfessor()
+    print("==================================================")
+    print("🤖 SISTEMA MULTIAGENTE: TUTOR INTELIGENTE DE IA 🤖")
+    print("==================================================")
+    print("A iniciar os subsistemas locais...")
     
-    print("==================================================")
-    print("🤖 Bem-vindo ao sistema de Tutor Inteligente! 🤖")
-    print("==================================================")
-    print(f"Agentes ativos: {recuperador.nome} e {professor.nome}\n") 
+    try:
+        # Passo 7: Inicialização dos Agentes e da Base de Dados Vetorial
+        recuperador = AgenteRecuperador()
+        professor = AgenteProfessor()
+    except Exception as e:
+        print(f"\n❌ Erro crítico ao iniciar os agentes: {e}")
+        print("Verifica se o arquivo 'data/aula1.txt' existe e se o Ollama está ativo.")
+        return
 
-    # Loop contínuo para manter o terminal rodando (Interface via terminal) 
+    print("\n✅ Todos os agentes estão online e prontos!")
+    print(f"-> {recuperador.nome}: Responsável pelo RAG (Busca Semântica).")
+    print(f"-> {professor.nome}: Responsável pela Explicação Didática (LLM Local).")
+    print("==================================================")
+
+    # Passo 8: Loop da Interface de Terminal (CLI)
     while True:
-        duvida = input("\n👨‍🎓 Digite sua dúvida sobre Python (ou digite 'sair' para fechar): ")
+        duvida = input("\n👨‍🎓 Coloca a tua dúvida sobre Python (ou digita 'sair' para encerrar): ")
         
         if duvida.lower() == 'sair':
-            print("Encerrando o sistema de tutoria. Bons estudos!")
+            print("\nA encerrar o Tutor Inteligente. Bons estudos!")
             break
             
-        # Passo A: O Agente Recuperador entra em ação primeiro 
-        contexto_do_material = recuperador.buscar_contexto(duvida)
+        if not duvida.strip():
+            print("Por favor, digita uma dúvida válida.")
+            continue
+
+        print("\n" + "="*40)
+        print("🧠 FLUXO DE COOPERAÇÃO DOS AGENTES COORDENADOS:")
+        print("="*40)
+
+        # 1. O Agente Recuperador executa a sua função (Simulando o uso de ferramenta/MCP)
+        contexto_recuperado = recuperador.buscar_contexto(duvida)
+        print(f"💡 [Contexto Obtido]: {contexto_recuperado[:100]}...") # Mostra um resumo do que encontrou
+
+        # 2. O Agente Professor recebe o contexto e formula a resposta final
+        resposta_final = professor.responder_ao_aluno(duvida, contexto_recuperado)
         
-        # Passo B: O Agente Professor recebe o que o recuperador achou e responde o aluno
-        resposta_final = professor.responder_ao_aluno(duvida, contexto_do_material)
-        
-        # Mostra o resultado final na tela
+        # 3. Exibe a resposta final no ecrã para o utilizador
         print(resposta_final)
-        print("-" * 50)
+        print("="*40)
 
 if __name__ == "__main__":
     iniciar_tutor()
