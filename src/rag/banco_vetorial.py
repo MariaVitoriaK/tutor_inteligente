@@ -18,25 +18,10 @@ class BancoVetorial:
             path=str(self.db_path)
         )
 
-        try:
-            self.embedding_function = (
-                embedding_functions.OllamaEmbeddingFunction()
-            )
-            self.collection = self.client.get_or_create_collection(
-                name="documentos",
-                metadata={"source": "data"},
-                embedding_function=self.embedding_function
-            )
-        except Exception as exc:
-            print(
-                f"⚠️ Não foi possível inicializar o embedding local: {exc}"
-            )
-            self.embedding_function = None
-            self.collection = self.client.get_or_create_collection(
-                name="documentos",
-                metadata={"source": "data"}
-            )
-
+        self.collection = self.client.get_or_create_collection(
+            name="documentos",
+            metadata={"source": "data"}
+       )
     def adicionar_documentos(self, documentos: List[str], ids: List[str]):
         self.collection.add(
             ids=ids,

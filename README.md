@@ -93,6 +93,7 @@ Se a coleção já existir, ela não será recriada.
 ### Instalação
 ```bash
 pip install -r requirements.txt
+pip install langchain-text-splitters
 ```
 
 ### Preparar o modelo local

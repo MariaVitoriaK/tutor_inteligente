@@ -1,0 +1,53 @@
+# Ambiente virtual
+venv/
+.env/
+.venv/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# VS Code
+.vscode/
+
+# IntelliJ / PyCharm
+.idea/
+
+# Logs
+*.log
+
+# Banco vetorial ChromaDB
+bd_vetorial/
+
+# Arquivos temporários
+tmp/
+temp/
+
+# Histórico de memória
+memoria/historico.json
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Testes
+.pytest_cache/
+
+# Cobertura
+.coverage
+htmlcov/
+
+# Arquivos de build
+build/
+dist/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Configurações locais
+.env.local
+.env.development
+.env.production
