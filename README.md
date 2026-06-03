@@ -3,25 +3,48 @@
 ## 👥 Elementos do Grupo
 * Maria Vitória Kuhn - 197960
 
-## 📝 Descrição do Problema
-O projeto resolve o problema de apoio ao estudo autónomo de estudantes de programação. Muitas vezes, os alunos enfrentam dificuldades fora do horário de aulas e os chatbots genéricos tendem a alucinar ou a fornecer códigos complexos demais. O **Tutor Inteligente** utiliza materiais pedagógicos oficiais da instituição para responder de forma focada, didática e sem custos de API.
+## Descrição do Problema
+Estudantes de programação frequentemente encontram dificuldades ao estudar fora do horário de aula e nem sempre possuem acesso imediato a professores ou monitores.
 
-## 🏗️ Arquitetura do Sistema e Papéis dos Agentes
-O sistema foi desenhado utilizando uma arquitetura de múltiplos agentes especializados que cooperam de forma sequencial:
+Além disso, assistentes genéricos podem gerar respostas incorretas, excessivamente avançadas ou desconectadas do conteúdo efetivamente trabalhado na disciplina.
 
-1. **Agente Recuperador (Especialista em Dados):** Atua como o componente de RAG. Tem como responsabilidade ler a base de dados vetorial, realizar a busca semântica baseada na intenção do utilizador e filtrar o contexto mais relevante.
-2. **Agente Professor (Especialista em Síntese):** Utiliza um modelo de linguagem de grande escala (LLM) local para processar a dúvida combinada com o contexto recuperado, gerando uma resposta altamente didática adaptada ao nível do estudante.
+O projeto Tutor Inteligente Multiagente foi desenvolvido para fornecer suporte educacional baseado em materiais didáticos previamente disponibilizados, utilizando modelos de linguagem locais, recuperação de contexto (RAG) e múltiplos agentes especializados.
 
-## 🛠️ Tecnologias Utilizadas, RAG e MCP
+A solução permite que os alunos realizem perguntas em linguagem natural através do terminal e recebam respostas contextualizadas com base no conteúdo das aulas cadastradas.
+
+## Objetivo da Solução
+
+Desenvolver um sistema multiagente capaz de:
+
+- auxiliar estudantes no aprendizado de Python;
+- responder dúvidas utilizando materiais didáticos locais;
+- gerar exercícios de fixação;
+- utilizar recuperação semântica de contexto;
+- operar totalmente offline através de modelos locais;
+- demonstrar integração entre agentes, tools, MCP, RAG e banco vetorial.
+
+## Arquitetura do Sistema e Papéis dos Agentes
+O sistema utiliza uma arquitetura baseada em agentes especializados que cooperam entre si para resolver as solicitações do usuário.
+
+1. **Agente Planejador:** Responsável por analisar a solicitação do usuário e decidir qual fluxo deve ser executado.
+2. **Agente Professor:** Responsável pela geração das respostas.
+3. **Agente Recuperador:** Responsável pela recuperação de contexto.
+4. **Agente Avaliador:** Responsável pela geração e correção de exercícios.
+5. **Agente Revisor:** Responsável pela validação final da resposta.
+
+## Tecnologias Utilizadas
 * **Modelo de Linguagem Local:** Ollama executando o modelo `llama3.2` de forma 100% offline.
 * **Banco de Dados Vetorial & Embeddings:** `ChromaDB` para indexação de documentos e pesquisa por similaridade semântica.
 * **Mecanismo de RAG:** Implementado através da segmentação do ficheiro `aula1.txt` em chunks armazenados no ChromaDB, recuperados dinamicamente com base na proximidade vetorial da dúvida.
 * **Conceito de Tools e MCP:** O Agente Recuperador expõe a sua capacidade de busca ao ecossistema em formato de ferramenta isolada (Tool Use), simulando a padronização proposta pelo *Model Context Protocol* para acesso seguro a recursos de armazenamento locais.
 
-## 🚀 Instruções de Instalação e Execução
+## Instruções de Instalação e Execução
 
 ### Pré-requisitos
-1. Ter o Python 3.10 ou superior instalado.
-2. Instalar o [Ollama](https://ollama.com/) e descarregar o modelo executando no terminal:
-   ```bash
-   ollama run llama3.2
+1. Clonar o projeto - git clone https://github.com/MariaVitoriaK/tutor_inteligente.git
+2. Ter o Python 3.10 ou superior instalado.
+3. Instalar dependências - pip install -r requirements.txt
+4. Instalar Ollama - https://ollama.com
+5. Baixar modelo - ollama pull llama3.2
+6. Gerar a base vetorial - python src/rag/ingestao.py
+7. Executar o sistema - python src/main.py
