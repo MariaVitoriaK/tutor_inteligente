@@ -1,5 +1,7 @@
 import ollama
 
+from agentes.recuperador import AgenteRecuperador
+
 
 class AgenteAvaliador:
 
@@ -8,6 +10,14 @@ class AgenteAvaliador:
         self.modelo = "llama3.2"
 
     def gerar_exercicio(self, tema, contexto):
+        if not contexto:
+            contexto = AgenteRecuperador().recuperar(tema)
+
+        if not contexto:
+            contexto = (
+                "Não foi possível recuperar o material didático. "
+                "Gere a questão com base no tema informado."
+            )
 
         print(f"[{self.nome}] Gerando exercício...")
 

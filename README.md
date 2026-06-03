@@ -1,50 +1,128 @@
 # Trabalho Final: Tutor Inteligente Multiagente com LLM Local
 
-## 👥 Elementos do Grupo
+## 👥 Integrantes do Grupo
 * Maria Vitória Kuhn - 197960
 
 ## Descrição do Problema
-Estudantes de programação frequentemente encontram dificuldades ao estudar fora do horário de aula e nem sempre possuem acesso imediato a professores ou monitores.
+Estudantes de programação enfrentam dificuldades ao estudar fora do horário de aula:
+- dúvidas sem resposta imediata;
+- ausência de material explicativo contextualizado;
+- respostas genéricas ou fora do nível da disciplina.
 
-Além disso, assistentes genéricos podem gerar respostas incorretas, excessivamente avançadas ou desconectadas do conteúdo efetivamente trabalhado na disciplina.
+Este projeto entrega um tutor inteligente que responde dúvidas de Python usando apenas conteúdos didáticos locais, com um fluxo multiagente coordenado e suporte a recuperação de contexto.
 
-O projeto Tutor Inteligente Multiagente foi desenvolvido para fornecer suporte educacional baseado em materiais didáticos previamente disponibilizados, utilizando modelos de linguagem locais, recuperação de contexto (RAG) e múltiplos agentes especializados.
+## Visão Geral da Solução
+O Tutor Inteligente é um sistema offline que combina:
+- interação por terminal em linguagem natural;
+- multiagentes com responsabilidades claras;
+- recuperação de contexto local por similaridade (RAG);
+- um banco vetorial persistente para documentos didáticos;
+- geração de exercícios e correção orientadas por contexto.
 
-A solução permite que os alunos realizem perguntas em linguagem natural através do terminal e recebam respostas contextualizadas com base no conteúdo das aulas cadastradas.
+## O que mudou nesta versão
+- `src/rag/banco_vetorial.py` foi implementado para usar `chromadb.PersistentClient`.
+- O sistema agora cria uma coleção Chroma persistente em `bd_vetorial/`.
+- `src/rag/ingestao.py` foi tornado mais robusto para importar corretamente o repositório e detectar se a base já existe.
+- `src/agentes/avaliador.py` agora recupera contexto automaticamente antes de gerar exercícios, evitando respostas vazias.
+- Foi adicionado um fallback textual simples quando o banco vetorial estiver vazio ou não responder.
 
-## Objetivo da Solução
+## Arquitetura e Papéis dos Agentes
+A aplicação está organizada em agentes com responsabilidades separadas:
 
-Desenvolver um sistema multiagente capaz de:
+1. **Planejador** (`src/agentes/planejador.py`)
+   - Analisa a pergunta do aluno.
+   - Decide entre fluxo de dúvida ou fluxo de avaliação.
 
-- auxiliar estudantes no aprendizado de Python;
-- responder dúvidas utilizando materiais didáticos locais;
-- gerar exercícios de fixação;
-- utilizar recuperação semântica de contexto;
-- operar totalmente offline através de modelos locais;
-- demonstrar integração entre agentes, tools, MCP, RAG e banco vetorial.
+2. **Professor** (`src/agentes/professor.py`)
+   - Recebe a pergunta do aluno.
+   - Tenta chamar a tool de busca de material para acessar o contexto.
+   - Se o contexto for recuperado, responde com base nele; caso contrário, responde diretamente.
 
-## Arquitetura do Sistema e Papéis dos Agentes
-O sistema utiliza uma arquitetura baseada em agentes especializados que cooperam entre si para resolver as solicitações do usuário.
+3. **Recuperador** (`src/agentes/recuperador.py` + `src/mcp/tools.py`)
+   - Consulta o banco vetorial para retornar trechos relevantes.
+   - Expõe essa lógica como uma tool usada pelo `Professor`.
 
-1. **Agente Planejador:** Responsável por analisar a solicitação do usuário e decidir qual fluxo deve ser executado.
-2. **Agente Professor:** Responsável pela geração das respostas.
-3. **Agente Recuperador:** Responsável pela recuperação de contexto.
-4. **Agente Avaliador:** Responsável pela geração e correção de exercícios.
-5. **Agente Revisor:** Responsável pela validação final da resposta.
+4. **Avaliador** (`src/agentes/avaliador.py`)
+   - Gera questões de múltipla escolha com base no tema e no contexto.
+   - Busca contexto se este não for fornecido explicitamente.
+   - Possui também função de correção de respostas do aluno.
 
-## Tecnologias Utilizadas
-* **Modelo de Linguagem Local:** Ollama executando o modelo `llama3.2` de forma 100% offline.
-* **Banco de Dados Vetorial & Embeddings:** `ChromaDB` para indexação de documentos e pesquisa por similaridade semântica.
-* **Mecanismo de RAG:** Implementado através da segmentação do ficheiro `aula1.txt` em chunks armazenados no ChromaDB, recuperados dinamicamente com base na proximidade vetorial da dúvida.
-* **Conceito de Tools e MCP:** O Agente Recuperador expõe a sua capacidade de busca ao ecossistema em formato de ferramenta isolada (Tool Use), simulando a padronização proposta pelo *Model Context Protocol* para acesso seguro a recursos de armazenamento locais.
+5. **Revisor** (`src/agentes/revisor.py`)
+   - Verifica clareza e gramática da resposta final.
+   - Não altera conceitos nem adiciona conteúdo.
 
-## Instruções de Instalação e Execução
+## Estrutura do Repositório
+- `README.md` — documentação do projeto.
+- `requirements.txt` — dependências do Python.
+- `data/` — conteúdos didáticos em `.txt`.
+- `bd_vetorial/` — banco vetorial persistente gerado pelo Chroma.
+- `src/main.py` — ponto de entrada do sistema.
+- `src/agentes/` — implementação dos agentes.
+- `src/mcp/` — definições de ferramenta e esquema MCP.
+- `src/rag/` — ingestão e busca de contexto vetorial.
 
+## Funcionamento do Banco Vetorial
+O banco usa `chromadb.PersistentClient` para manter a coleção de documentos entre execuções.
+
+- A base é criada em `bd_vetorial/`.
+- Os arquivos `*.txt` dentro de `data/` são divididos em chunks com `RecursiveCharacterTextSplitter`.
+- Cada chunk é indexado como documento no Chroma.
+- A consulta utiliza o texto da pergunta para recuperar os trechos mais relevantes.
+- Se o Chroma não estiver inicializado ou estiver vazio, o sistema cai para um fallback básico de busca textual.
+
+## Ingestão de Dados
+Execute:
+
+```bash
+python src/rag/ingestao.py
+```
+
+Esse script:
+- lê todos os arquivos `.txt` em `data/`;
+- divide os textos em blocos de até 500 caracteres com 100 de sobreposição;
+- adiciona os conteúdos à coleção `documentos` do Chroma.
+
+Se a coleção já existir, ela não será recriada.
+
+## Requisitos e Instalação
 ### Pré-requisitos
-1. Clonar o projeto - git clone https://github.com/MariaVitoriaK/tutor_inteligente.git
-2. Ter o Python 3.10 ou superior instalado.
-3. Instalar dependências - pip install -r requirements.txt
-4. Instalar Ollama - https://ollama.com
-5. Baixar modelo - ollama pull llama3.2
-6. Gerar a base vetorial - python src/rag/ingestao.py
-7. Executar o sistema - python src/main.py
+- Python 3.10 ou superior
+- Ollama instalado e em funcionamento
+- Modelo local `llama3.2` disponível via Ollama
+
+### Instalação
+```bash
+pip install -r requirements.txt
+```
+
+### Preparar o modelo local
+```bash
+ollama pull llama3.2
+```
+
+### Gerar a base vetorial
+```bash
+python src/rag/ingestao.py
+```
+
+### Executar o tutor
+```bash
+python src/main.py
+```
+
+## Uso
+- Digite sua pergunta no terminal.
+- Para encerrar, digite `sair`.
+- Perguntas que contenham termos como `teste`, `quiz`, `exercício`, `avaliar` ou `prova` acionam o fluxo de avaliação.
+- Outras perguntas seguem o fluxo de dúvida e consultam o contexto disponível.
+
+## Observações
+- O sistema foi desenhado para operar 100% offline, desde que o modelo local esteja instalado.
+- A recuperação de contexto depende da base vetorial; se ela não estiver disponível, o tutor usa um fallback de busca textual.
+- O revisor é um passo de controle de qualidade, mas não altera o conteúdo original da resposta.
+
+## Possíveis melhorias futuras
+- adicionar testes automatizados para cada agente;
+- incluir suporte a mais formatos de conteúdo (PDF, Markdown);
+- tornar o fluxo de correção interativo com o aluno;
+- melhorar o fallback de busca para usar embeddings offline sem Ollama.
