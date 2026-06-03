@@ -1,11 +1,6 @@
-from agentes.recuperador import AgenteRecuperador
-
-def buscar_material(
-    pergunta
-):
-
+def buscar_material(pergunta: str):
+    from agentes.recuperador import AgenteRecuperador
+    
     recuperador = AgenteRecuperador()
 
-    return recuperador.recuperar(
-        pergunta
-    )
+    return recuperador.recuperar(pergunta)

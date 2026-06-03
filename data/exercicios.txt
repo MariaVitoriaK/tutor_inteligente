@@ -1,0 +1,56 @@
+EXERCÍCIOS DE PYTHON
+
+Questão 1
+
+Qual é a função de uma variável?
+
+A) Repetir código
+B) Armazenar dados
+C) Criar funções
+D) Encerrar programas
+
+Resposta correta: B
+
+Questão 2
+
+Qual operador é utilizado para comparar igualdade?
+
+A) =
+B) !=
+C) ==
+D) <=
+
+Resposta correta: C
+
+Questão 3
+
+Qual estrutura é utilizada para repetição?
+
+A) print
+B) if
+C) return
+D) for
+
+Resposta correta: D
+
+Questão 4
+
+Qual palavra-chave cria uma função?
+
+A) create
+B) class
+C) def
+D) function
+
+Resposta correta: C
+
+Questão 5
+
+Qual é o objetivo do return?
+
+A) Encerrar o programa
+B) Repetir código
+C) Retornar um valor
+D) Imprimir texto
+
+Resposta correta: C

@@ -1,0 +1,71 @@
+ERROS COMUNS EM PYTHON
+
+1. ESQUECER OS DOIS PONTOS
+
+Errado:
+
+if idade > 18
+    print("Maior")
+
+Correto:
+
+if idade > 18:
+    print("Maior")
+
+2. ERRO DE INDENTAÇÃO
+
+Errado:
+
+if idade > 18:
+print("Maior")
+
+Correto:
+
+if idade > 18:
+    print("Maior")
+
+3. USAR = EM VEZ DE ==
+
+Errado:
+
+if idade = 18:
+
+Correto:
+
+if idade == 18:
+
+4. VARIÁVEL NÃO DEFINIDA
+
+Errado:
+
+print(nome)
+
+quando a variável não foi criada.
+
+5. DIVISÃO POR ZERO
+
+Errado:
+
+resultado = 10 / 0
+
+6. ESQUECER PARÊNTESES
+
+Errado:
+
+print
+
+Correto:
+
+print("Olá")
+
+7. RETORNO INCORRETO EM FUNÇÕES
+
+Errado:
+
+def somar(a, b):
+    a + b
+
+Correto:
+
+def somar(a, b):
+    return a + b

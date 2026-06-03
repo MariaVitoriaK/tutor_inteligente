@@ -1,0 +1,84 @@
+AULA 3 - LISTAS EM PYTHON
+
+INTRODUÇÃO
+
+Uma lista é uma estrutura de dados que permite armazenar vários valores em uma única variável.
+
+Exemplo:
+
+frutas = ["maçã", "banana", "uva"]
+
+Cada item possui uma posição chamada índice.
+
+ÍNDICES
+
+O primeiro elemento possui índice 0.
+
+Exemplo:
+
+frutas = ["maçã", "banana", "uva"]
+
+frutas[0] retorna "maçã"
+frutas[1] retorna "banana"
+frutas[2] retorna "uva"
+
+ADICIONAR ELEMENTOS
+
+Método append()
+
+Exemplo:
+
+frutas = ["maçã", "banana"]
+
+frutas.append("uva")
+
+Resultado:
+
+["maçã", "banana", "uva"]
+
+REMOVER ELEMENTOS
+
+Método remove()
+
+Exemplo:
+
+frutas.remove("banana")
+
+LISTAR ELEMENTOS
+
+Utilizando for:
+
+for fruta in frutas:
+    print(fruta)
+
+TAMANHO DA LISTA
+
+Função len()
+
+Exemplo:
+
+quantidade = len(frutas)
+
+LISTAS COM NÚMEROS
+
+numeros = [10, 20, 30, 40]
+
+Soma dos elementos:
+
+print(sum(numeros))
+
+Maior valor:
+
+print(max(numeros))
+
+Menor valor:
+
+print(min(numeros))
+
+BOAS PRÁTICAS
+
+Utilizar listas quando houver necessidade de armazenar coleções de dados relacionados.
+
+Exemplo:
+
+nomes_alunos = ["Ana", "Carlos", "João"]

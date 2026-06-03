@@ -1,4 +1,73 @@
-Conteúdo da Aula 1 - Conceitos Básicos de Python:
-1. Variáveis: Servem para salvar dados na memória. Exemplo: nome = "Maria" ou idade = 20.
-2. Condicionais (If/Else): Servem para tomar decisões no código. Exemplo: if idade >= 18: print("Maior de idade").
-3. Loops (For): Servem para repetir uma tarefa várias vezes. Exemplo: for i in range(3): print(i).
+AULA 1 - FUNDAMENTOS DE PYTHON
+
+Python é uma linguagem de programação de alto nível, interpretada e de sintaxe simples.
+
+VARIÁVEIS
+
+Variáveis armazenam dados na memória.
+
+Exemplos:
+
+nome = "Maria"
+idade = 20
+altura = 1.70
+
+Tipos básicos:
+
+str -> texto
+int -> números inteiros
+float -> números decimais
+bool -> verdadeiro ou falso
+
+Exemplos:
+
+nome = "João"
+idade = 18
+altura = 1.75
+aprovado = True
+
+ENTRADA E SAÍDA
+
+Receber dados:
+
+nome = input("Digite seu nome: ")
+
+Mostrar dados:
+
+print(nome)
+
+OPERADORES
+
+Soma:
+a + b
+
+Subtração:
+a - b
+
+Multiplicação:
+a * b
+
+Divisão:
+a / b
+
+Exemplo:
+
+resultado = 10 + 5
+
+COMENTÁRIOS
+
+Comentário de uma linha:
+
+# Isto é um comentário
+
+BOAS PRÁTICAS
+
+Utilizar nomes significativos.
+
+Exemplo:
+
+idade_aluno = 20
+
+Evitar:
+
+x = 20

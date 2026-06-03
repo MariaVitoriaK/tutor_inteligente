@@ -1,6 +1,6 @@
 import os
 
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from banco_vetorial import BancoVetorial
 
@@ -9,7 +9,20 @@ def carregar_documentos():
 
     documentos = []
 
-    pasta = "../data"
+    BASE_DIR = os.path.dirname(
+    os.path.dirname(
+        os.path.dirname(
+            os.path.abspath(__file__)
+            )
+        )
+    )
+
+    pasta = os.path.join(
+        BASE_DIR,
+        "data"
+    )
+    
+    print("Lendo arquivos de:", pasta)
 
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=500,
@@ -48,3 +61,6 @@ def carregar_documentos():
         )
 
         print("Base vetorial criada.")
+
+if __name__ == "__main__":
+    carregar_documentos()

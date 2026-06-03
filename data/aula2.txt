@@ -1,3 +1,75 @@
-Conteúdo da Aula 2 - Funções e Listas:
-1. Listas: Servem para guardar vários itens numa única variável. Exemplo: frutas = ["maçã", "banana"].
-2. Funções (def): Servem para agrupar blocos de código que fazem uma tarefa específica, para não termos de repetir código. Exemplo: def saudar(): print("Olá!").
+AULA 2 - ESTRUTURAS DE CONTROLE E FUNÇÕES
+
+CONDICIONAIS
+
+Utilizadas para tomar decisões.
+
+Exemplo:
+
+idade = 18
+
+if idade >= 18:
+    print("Maior de idade")
+else:
+    print("Menor de idade")
+
+OPERADORES LÓGICOS
+
+and -> E
+or -> OU
+not -> NÃO
+
+Exemplo:
+
+if idade >= 18 and idade < 60:
+    print("Adulto")
+
+LOOPS
+
+FOR
+
+Executa repetições controladas.
+
+Exemplo:
+
+for i in range(5):
+    print(i)
+
+WHILE
+
+Executa enquanto a condição for verdadeira.
+
+contador = 0
+
+while contador < 5:
+    print(contador)
+    contador += 1
+
+FUNÇÕES
+
+Funções permitem reutilizar código.
+
+Exemplo:
+
+def saudar():
+    print("Olá")
+
+saudar()
+
+Função com parâmetros:
+
+def somar(a, b):
+    return a + b
+
+resultado = somar(10, 20)
+
+RETURN
+
+O return devolve um valor.
+
+Exemplo:
+
+def quadrado(numero):
+    return numero * numero
+
+print(quadrado(4))

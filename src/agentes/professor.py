@@ -1,101 +1,96 @@
-import json
-import os
 import ollama
+
+from mcp.tools import buscar_material
+from mcp.esquemas import tool_busca_material
+
 
 class AgenteProfessor:
 
     def __init__(self):
-
         self.modelo = "llama3.2"
 
-        self.arquivo_memoria = (
-            "memoria/historico.json"
+    def responder(self, pergunta):
+
+        print("\n🎓 [Professor] Analisando pergunta...")
+
+        primeira_resposta = ollama.chat(
+            model=self.modelo,
+            messages=[
+                {
+                    "role": "system",
+                    "content": """
+                    Você é um professor especialista em Python.
+
+                    Sempre que precisar consultar
+                    materiais das aulas,
+                    utilize a ferramenta
+                    buscar_material.
+
+                    Se já souber responder,
+                    responda diretamente.
+                    """
+                },
+                {
+                    "role": "user",
+                    "content": pergunta
+                }
+            ],
+            tools=[tool_busca_material]
         )
 
-        self.historico = self.carregar()
+        mensagem = primeira_resposta["message"]
 
-    def carregar(self):
+        if mensagem.get("tool_calls"):
 
-        if os.path.exists(
-            self.arquivo_memoria
-        ):
+            print("🛠️ [Professor] Decidiu usar uma Tool")
 
-            with open(
-                self.arquivo_memoria,
-                encoding="utf-8"
-            ) as f:
+            tool_call = mensagem["tool_calls"][0]
 
-                return json.load(f)
+            argumentos = tool_call["function"]["arguments"]
 
-        return []
-
-    def salvar(self):
-
-        with open(
-            self.arquivo_memoria,
-            "w",
-            encoding="utf-8"
-        ) as f:
-
-            json.dump(
-                self.historico,
-                f,
-                ensure_ascii=False,
-                indent=4
+            print(
+                f"🔍 [Professor] Buscando contexto para: "
+                f"{argumentos['pergunta']}"
             )
 
-    def responder(
-        self,
-        pergunta,
-        contexto
-    ):
+            contexto = buscar_material(
+                argumentos["pergunta"]
+            )
 
-        mensagens = [
-            {
-                "role": "system",
-                "content":
-                f"""
-                Você é professor de Python.
+            print("📚 [Professor] Contexto recuperado")
 
-                Use somente este contexto:
+            resposta_final = ollama.chat(
+                model=self.modelo,
+                messages=[
+                    {
+                        "role": "system",
+                        "content": f"""
+                    Você é um professor de Python.
+                    
+                    Responda SOMENTE usando o contexto fornecido.
+                    
+                    Se a resposta não estiver no contexto,
+                    diga:
+                    
+                    "Não encontrei essa informação
+                    na base de conhecimento."
+                    
+                    CONTEXTO:
+                    
+                    {contexto}
+                    """
+                    },
+                    {
+                        "role": "user",
+                        "content": pergunta
+                    }
+                ]
+            )
 
-                {contexto}
-                """
-            }
-        ]
+            print("✅ [Professor] Resposta gerada")
 
-        mensagens.extend(
-            self.historico[-10:]
-        )
+            return resposta_final["message"]["content"]
 
-        mensagens.append(
-            {
-                "role": "user",
-                "content": pergunta
-            }
-        )
+        print("💡 [Professor] Não precisou usar Tool")
 
-        resposta = ollama.chat(
-            model=self.modelo,
-            messages=mensagens
-        )
-
-        texto = resposta["message"]["content"]
-
-        self.historico.append(
-            {
-                "role": "user",
-                "content": pergunta
-            }
-        )
-
-        self.historico.append(
-            {
-                "role": "assistant",
-                "content": texto
-            }
-        )
-
-        self.salvar()
-
-        return texto
+        return mensagem["content"]

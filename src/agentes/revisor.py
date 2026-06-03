@@ -12,16 +12,21 @@ class AgenteRevisor:
     ):
 
         prompt = f"""
-        Revise a resposta abaixo.
-
-        Verifique:
+        Verifique apenas:
+        
         - clareza
-        - correção
-        - didática
-
+        - gramática
+        
+        NÃO reescreva.
+        NÃO acrescente conteúdo.
+        NÃO altere conceitos.
+        
         Resposta:
-
+        
         {resposta}
+        
+        Retorne exatamente a mesma resposta
+        caso esteja correta.
         """
 
         resultado = ollama.chat(

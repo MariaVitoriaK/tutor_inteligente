@@ -1,0 +1,85 @@
+AULA 4 - DICIONÁRIOS EM PYTHON
+
+INTRODUÇÃO
+
+Dicionários armazenam informações em pares chave-valor.
+
+Exemplo:
+
+aluno = {
+    "nome": "Maria",
+    "idade": 20,
+    "curso": "ADS"
+}
+
+ACESSAR VALORES
+
+Utilizando a chave:
+
+print(aluno["nome"])
+
+Resultado:
+
+Maria
+
+ADICIONAR NOVOS CAMPOS
+
+aluno["cidade"] = "Passo Fundo"
+
+ALTERAR VALORES
+
+aluno["idade"] = 21
+
+REMOVER CAMPOS
+
+del aluno["cidade"]
+
+PERCORRER DICIONÁRIOS
+
+for chave, valor in aluno.items():
+    print(chave, valor)
+
+VERIFICAR EXISTÊNCIA
+
+if "nome" in aluno:
+    print("Existe")
+
+MÉTODO GET
+
+Permite acessar uma chave sem gerar erro.
+
+Exemplo:
+
+cidade = aluno.get("cidade")
+
+DIFERENÇA ENTRE LISTAS E DICIONÁRIOS
+
+Lista:
+
+frutas = ["maçã", "banana"]
+
+Acesso por índice:
+
+frutas[0]
+
+Dicionário:
+
+aluno = {
+    "nome": "Maria"
+}
+
+Acesso por chave:
+
+aluno["nome"]
+
+BOAS PRÁTICAS
+
+Utilizar dicionários quando os dados possuírem atributos identificáveis.
+
+Exemplo:
+
+produto = {
+    "nome": "Notebook",
+    "preco": 3500,
+    "estoque": 10
+}
