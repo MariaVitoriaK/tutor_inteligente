@@ -1,4 +1,5 @@
 # src/agentes.py
+
 import os
 import chromadb
 import ollama
@@ -6,51 +7,54 @@ import ollama
 class AgenteRecuperador:
     def __init__(self):
         self.nome = "Agente Recuperador"
-        # Cria ou conecta ao banco vetorial na pasta raiz do projeto
         self.cliente_bd = chromadb.PersistentClient(path="./bd_vetorial")
-        self.colecao = self.cliente_bd.get_or_create_collection(name="aulas_python")
         
-        # Carrega o conhecimento tratando erros de caminhos
+        # Apagamos a coleção antiga ao iniciar para não duplicar dados sempre que o código corre
+        try:
+            self.cliente_bd.delete_collection(name="aulas_python")
+        except:
+            pass
+            
+        self.colecao = self.cliente_bd.get_or_create_collection(name="aulas_python")
         self._carregar_conhecimento()
 
     def _carregar_conhecimento(self):
-        """Descobre o caminho correto do arquivo de texto e o lê com segurança"""
-        # Descobre onde o arquivo agentes.py está e localiza a pasta 'data' de forma segura
+        """Lê TODOS os ficheiros .txt dentro da pasta data"""
         diretorio_atual = os.path.dirname(os.path.abspath(__file__))
-        caminho_arquivo = os.path.join(diretorio_atual, "..", "data", "aula1.txt")
+        pasta_data = os.path.join(diretorio_atual, "..", "data")
         
-        if not os.path.exists(caminho_arquivo):
-            print(f"❌ [{self.nome}]: Erro! O arquivo não foi encontrado em: {caminho_arquivo}")
+        if not os.path.exists(pasta_data):
+            print(f"❌ [{self.nome}]: Pasta 'data' não encontrada.")
             return
 
-        with open(caminho_arquivo, "r", encoding="utf-8") as ficheiro:
-            # Lê as linhas e ignora linhas que estejam totalmente em branco
-            linhas = [linha.strip() for linha in ficheiro.readlines() if linha.strip()]
+        documentos_totais = []
         
-        # PROTEÇÃO: Se o arquivo estiver vazio, avisa o usuário em vez de quebrar o ChromaDB
-        if not linhas:
-            print(f"⚠️ [{self.nome}]: Atenção! O arquivo 'aula1.txt' está vazio. Insira conteúdo nele.")
+        # Percorre todos os ficheiros na pasta
+        for nome_ficheiro in os.listdir(pasta_data):
+            if nome_ficheiro.endswith(".txt"):
+                caminho_ficheiro = os.path.join(pasta_data, nome_ficheiro)
+                with open(caminho_ficheiro, "r", encoding="utf-8") as ficheiro:
+                    # Lê o texto e adiciona uma tag com o nome da aula (ajuda o modelo de IA)
+                    linhas = [f"[Origem: {nome_ficheiro}] {linha.strip()}" for linha in ficheiro.readlines() if linha.strip()]
+                    documentos_totais.extend(linhas)
+        
+        if not documentos_totais:
+            print(f"⚠️ [{self.nome}]: Nenhum conteúdo encontrado nos ficheiros.")
             return
 
-        # Se houver texto, gera os IDs e salva no banco vetorial
-        ids = [str(i) for i in range(len(linhas))]
-        self.colecao.add(documents=linhas, ids=ids)
-        print(f"📚 [{self.nome}]: Base de conhecimento carregada com sucesso! ({len(linhas)} linhas indexadas)")
+        # Guarda tudo na base de dados vetorial
+        ids = [str(i) for i in range(len(documentos_totais))]
+        self.colecao.add(documents=documentos_totais, ids=ids)
+        print(f"📚 [{self.nome}]: Base expandida com sucesso! ({len(documentos_totais)} blocos de texto indexados das tuas aulas)")
 
     def buscar_contexto(self, duvida_aluno):
-        print(f"\n🚀 [{self.nome}]: A realizar busca semântica na base vetorial...")
+        print(f"🚀 [{self.nome}]: A pesquisar na base de dados vetorial...")
+        resultados = self.colecao.query(query_texts=[duvida_aluno], n_results=2) # Agora trazemos os 2 melhores resultados
         
-        # Faz a busca inteligente por significado
-        resultados = self.colecao.query(
-            query_texts=[duvida_aluno],
-            n_results=1
-        )
-        
-        # Se a IA encontrou algo, retorna o texto. Se não, retorna um aviso.
         if resultados and resultados['documents'] and resultados['documents'][0]:
-            return resultados['documents'][0][0]
-        return "Nenhum contexto específico encontrado na base de dados."
-
+            # Junta os resultados encontrados num único texto
+            return " | ".join(resultados['documents'][0])
+        return "Nenhum contexto específico encontrado."
 
 class AgenteProfessor:
     def __init__(self):
@@ -71,3 +75,28 @@ class AgenteProfessor:
             return f"\n--- RESPOSTA DO TUTOR (IA) ---\n{resposta_ia['message']['content']}"
         except Exception as e:
             return f"\n❌ Erro ao chamar o Ollama: {e}. O Ollama está rodando no seu computador?"
+        
+    
+class AgenteAvaliador:
+    def __init__(self):
+        self.nome = "Agente Avaliador (Ferramenta de Teste)"
+        self.modelo = "llama3.2"
+
+    def gerar_exercicio(self, tema, contexto):
+        """
+        Esta é a nossa nova 'ferramenta'. Em vez de explicar, ela cria um 
+        desafio prático para testar os conhecimentos do utilizador.
+        """
+        print(f"📝 [{self.nome}]: A gerar um exercício prático sobre '{tema}'...")
+        
+        prompt_sistema = "És um examinador de Python. A tua função é criar UMA pergunta de escolha múltipla (com opções A, B, C) baseada estritamente no contexto fornecido. Não dês a resposta imediatamente, pede ao aluno para adivinhar."
+        prompt_utilizador = f"Contexto do material de estudo:\n{contexto}\n\nTema pedido pelo aluno: {tema}"
+
+        try:
+            resposta_ia = ollama.chat(model=self.modelo, messages=[
+                {'role': 'system', 'content': prompt_sistema},
+                {'role': 'user', 'content': prompt_utilizador}
+            ])
+            return f"\n--- EXERCÍCIO DE TESTE ---\n{resposta_ia['message']['content']}"
+        except Exception as e:
+            return f"\n❌ Erro ao gerar o teste: {e}"

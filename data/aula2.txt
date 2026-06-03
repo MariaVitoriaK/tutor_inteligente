@@ -1,0 +1,3 @@
+Conteúdo da Aula 2 - Funções e Listas:
+1. Listas: Servem para guardar vários itens numa única variável. Exemplo: frutas = ["maçã", "banana"].
+2. Funções (def): Servem para agrupar blocos de código que fazem uma tarefa específica, para não termos de repetir código. Exemplo: def saudar(): print("Olá!").
