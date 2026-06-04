@@ -1,3 +1,5 @@
+**AVISO:** Existem dois commits feitos por outra pessoa, a explicação é  que eu estava usando um pc da faculdade e não notei que as credencias eram outras.
+
 # Trabalho Final: Tutor Inteligente Multiagente com LLM Local
 
 ## 👥 Integrantes do Grupo
