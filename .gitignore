@@ -54,3 +54,6 @@ dist/
 
 tmp_chroma/
 tmp_chroma2/
+
+__pycache__/
+*.pyc
