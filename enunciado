@@ -1,0 +1,160 @@
+Trabalho Final: Sistema Multiagente com LLMs
+Neste trabalho final, cada grupo deverá projetar, implementar e demonstrar uma solução prática baseada em LLMs e em arquitetura multiagente para resolver um problema escolhido pela própria equipe.
+O foco da atividade é ir além do plano conceitual e construir um sistema funcional, com interação
+via terminal, agentes especializados, ferramentas disponíveis para esses agentes e mecanismos de
+recuperação de informação.
+A proposta deve evidenciar como diferentes agentes cooperam para atingir um objetivo comum, como
+acessam recursos externos com segurança e como utilizam recuperação de contexto para melhorar a
+qualidade das respostas e das decisões do sistema.
+• Formato: grupos de 3 a 4 estudantes.
+• Entrega: repositório no GitHub.
+• Produto esperado: implementação funcional com instruções claras de execução.
+Objetivo Geral
+Desenvolver uma aplicação em que dois ou mais agentes baseados em LLMs atuem de forma coordenada para resolver um problema real ou plausível, definido pelo grupo. A equipe tem liberdade
+para escolher o domínio do problema, desde que a solução demonstre claramente uma arquitetura
+multiagente e o uso integrado dos conceitos trabalhados na disciplina.
+O trabalho deve ir além de um simples chatbot. Espera-se uma solução em que os agentes tenham
+papéis distintos, tomem decisões com base em contexto recuperado e utilizem ferramentas para
+executar tarefas concretas.
+Requisitos Mínimos da Implementação
+A solução deve incluir obrigatoriamente os seguintes elementos:
+1. Arquitetura multiagente: pelo menos dois agentes com responsabilidades distintas, como
+planejamento, recuperação, execução, avaliação, síntese ou validação.
+Prof. Diego A. Lusa, Prof. Roberto Rabello 1
+Inteligência Artificial
+2. Uso de LLMs: o sistema deve utilizar modelos de linguagem para tomada de decisão, geração
+de texto, roteamento de tarefas ou composição de respostas.
+3. Modelos locais: utilizar modelos locais baseados em LLaMA ou similares, executados por
+ferramentas adequadas ao ambiente adotado pelo grupo.
+4. MCP (Model Context Protocol): incorporar MCP na arquitetura, seja para integração entre
+agentes e ferramentas, seja para padronizar o acesso a recursos externos.
+5. RAG (Retrieval-Augmented Generation): implementar uma estratégia de recuperação de
+informação a partir de uma base documental relevante para o problema escolhido.
+6. Embeddings e armazenamento vetorial: criar e utilizar embeddings para indexação e recuperação de informações.
+7. Tools para os agentes: disponibilizar ferramentas acionáveis pelos agentes, como busca em
+documentos, consulta a arquivos, cálculos, filtros, validações, ou acesso a serviços locais.
+8. Interface via terminal: permitir a execução e a demonstração do sistema por linha de comando,
+com fluxo de uso claro.
+9. Documentação técnica: explicar as decisões de arquitetura, tecnologias utilizadas, configuração
+do ambiente e instruções de uso.
+Escopo do Trabalho
+Cada grupo deve definir um problema que realmente se beneficie de uma abordagem multiagente.
+Não basta incluir vários agentes apenas para cumprir um requisito. A divisão de responsabilidades
+deve fazer sentido dentro do fluxo da aplicação.
+Exemplos de papéis possíveis:
+• agente planejador, responsável por decompor o problema em etapas;
+• agente recuperador, responsável por consultar a base vetorial e selecionar contexto relevante;
+• agente executor, responsável por chamar tools e consolidar resultados;
+• agente revisor, responsável por verificar consistência, qualidade ou aderência a regras.
+O grupo deve justificar por que a arquitetura escolhida é adequada ao problema proposto e quais
+ganhos ela traz em relação a uma solução com agente único.
+Prof. Diego A. Lusa, Prof. Roberto Rabello 2
+Inteligência Artificial
+Entregáveis Obrigatórios
+1. Repositório no GitHub
+O repositório deve conter o código-fonte completo do projeto e todos os arquivos necessários para
+execução da solução. A organização interna do repositório será considerada na avaliação.
+A equipe deve providenciar um repositório no GitHub, com acesso público, e indicar o link do mesmo
+no momento da entrega.
+2. README detalhado
+O README deve apresentar, no mínimo, os seguintes elementos:
+• integrantes da equipe;
+• descrição do problema escolhido;
+• objetivo da solução;
+• descrição da arquitetura multiagente;
+• papel de cada agente;
+• descrição das tools disponíveis;
+• explicação de como MCP foi utilizado;
+• explicação da estratégia de RAG;
+• origem e natureza da base de conhecimento utilizada;
+• tecnologia de embeddings e armazenamento vetorial adotados;
+• modelo local utilizado e forma de execução;
+• dependências do projeto;
+• instruções completas para instalação e execução;
+• exemplos de uso pelo terminal;
+Roteiro de Desenvolvimento
+O trabalho pode ser desenvolvido com base no seguinte roteiro:
+1. Definição do problema: escolher um contexto em que a cooperação entre agentes faça sentido. Contudo, sendo uma atividade cujo foco é a implementação, o grupo pode optar por
+um problema mais simples. O importante é que a solução seja coerente e funcional, e não
+necessariamente complexa.
+Prof. Diego A. Lusa, Prof. Roberto Rabello 3
+Inteligência Artificial
+2. Especificação da arquitetura: definir os agentes, seus papéis, entradas, saídas e fluxo de
+colaboração.
+3. Escolha do modelo local: selecionar um modelo local e justificar a escolha. A capacidade de
+processamento pode ser uma justificativa.
+4. Definição das tools: projetar quais ferramentas os agentes poderão utilizar e em quais situações.
+5. Construção da base de conhecimento: reunir documentos, dados ou registros que alimentarão
+o processo de recuperação.
+6. Geração de embeddings: indexar a base de conhecimento em uma estrutura apropriada para
+busca semântica.
+7. Implementação do fluxo RAG: conectar a recuperação de contexto ao raciocínio dos agentes.
+8. Integração com MCP: estruturar a comunicação com ferramentas e recursos por meio do protocolo adotado.
+9. Criação da interface de terminal: permitir que um usuário execute o sistema e acompanhe o
+fluxo principal.
+10. Documentação final: preparar o README, exemplos de execução e reflexão crítica sobre o
+projeto.
+Critérios de Avaliação
+Critério Peso Descrição
+Criatividade e
+adequação do
+problema
+20% Avalia a relevância do problema escolhido, a originalidade da proposta e
+a coerência entre o problema, a arquitetura e a solução desenvolvida.
+Funcionalidade da
+solução
+30% Verifica se o sistema funciona de fato, se os agentes cooperam
+corretamente, se a interface de terminal é utilizável
+Uso técnico dos
+conceitos da
+disciplina
+25% Considera a incorporação efetiva de MCP, RAG, LLMs, multiagentes,
+embeddings, tools e modelos locais, com integração consistente e
+justificável.
+Eficiência e
+qualidade de
+implementação
+15% Observa a organização do código, a clareza da arquitetura, o uso racional
+de recursos, a qualidade das escolhas técnicas e a robustez básica da
+solução.
+Prof. Diego A. Lusa, Prof. Roberto Rabello 4
+Inteligência Artificial
+Critério Peso Descrição
+Documentação 10% Avalia a qualidade do README, a clareza das instruções de execução, a
+explicação da implementação e a capacidade do grupo de comunicar o
+projeto via documentação.
+Restrições e Observações
+• O trabalho deve ser implementado pelo grupo. Não será aceito apenas um documento conceitual
+ou uma coleção de prompts sem sistema funcional.
+• O uso de bibliotecas e frameworks é altamente recomendado.
+• O sistema deve operar com modelos locais, e não depender exclusivamente de APIs pagas ou
+serviços externos.
+Sugestões de Contextos para o Projeto
+Caso o grupo tenha dificuldade para definir um problema, seguem alguns contextos possíveis:
+• assistente acadêmico multiagente para apoiar estudos, revisões e organização de cronogramas;
+• sistema de apoio à triagem de chamados de suporte técnico com recuperação de base documental;
+• agente de consulta jurídica ou normativa para documentos internos de uma instituição;
+• assistente de atendimento em saúde para orientações iniciais baseadas em protocolos informativos;
+• sistema para apoio a recrutamento, triagem de perfis e análise de currículos;
+• tutor inteligente para disciplinas específicas, com recuperação de materiais didáticos;
+• plataforma de apoio a pequenos negócios para atendimento, catálogo e resposta a dúvidas
+frequentes;
+• sistema de investigação de notícias ou documentos, com agentes especializados em busca,
+síntese e verificação;
+• assistente para análise de contratos, editais ou regulamentos;
+Prof. Diego A. Lusa, Prof. Roberto Rabello 5
+Inteligência Artificial
+• ambiente de apoio à programação, com agentes para planejamento, busca de documentação,
+revisão e explicação de código.
+O grupo pode propor outros contextos, desde que a escolha seja viável para o prazo da disciplina e
+compatível com os requisitos técnicos do trabalho.
+Resultado Esperado
+Ao final do semestre, espera-se que cada equipe entregue um projeto que demonstre compreensão
+prática dos principais conceitos contemporâneos de aplicações com LLMs, especialmente no que
+diz respeito à coordenação entre agentes, ao uso de contexto recuperado, à integração com
+ferramentas e à execução local de modelos.
+Mais importante do que construir algo grande é construir algo coerente, funcional, justificável e
+bem documentado.
+Peso do Trabalho Final
+O trabalho final terá um peso de 50% na nota final da disciplina, refletindo a importância de uma
+aplicação prática e integrada dos conceitos estudados ao longo do semestre.

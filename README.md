@@ -129,3 +129,32 @@ python src/main.py
 - incluir suporte a mais formatos de conteúdo (PDF, Markdown);
 - tornar o fluxo de correção interativo com o aluno;
 - melhorar o fallback de busca para usar embeddings offline sem Ollama.
+
+## Testes automatizados
+
+Este repositório agora inclui testes automatizados com `pytest` cobrindo:
+
+- testes unitários para os agentes em `tests/`;
+- um teste E2E que executa o fluxo principal (`src/main.py`) com mocks para o modelo e banco vetorial.
+
+Como executar os testes:
+
+1. Instale o `pytest` (recomendado em um virtualenv):
+
+```bash
+pip install pytest
+```
+
+2. Execute os testes a partir da raiz do repositório:
+
+```bash
+pytest -q
+```
+
+Observações:
+
+- Os testes usam `monkeypatch` para substituir chamadas a `ollama.chat` e ao banco vetorial, portanto
+   não precisam de um modelo local nem de um Chroma ativo para rodar.
+- Se desejar rodar testes que integrem o modelo real e o Chroma, execute-os manualmente após garantir
+   que `ollama` e o banco vetorial estejam corretamente configurados.
+
