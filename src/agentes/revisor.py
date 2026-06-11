@@ -29,14 +29,19 @@ class AgenteRevisor:
         caso esteja correta.
         """
 
-        resultado = ollama.chat(
-            model=self.modelo,
-            messages=[
-                {
-                    "role":"user",
-                    "content":prompt
-                }
-            ]
-        )
+        try:
+            resultado = ollama.chat(
+                model=self.modelo,
+                messages=[
+                    {
+                        "role":"user",
+                        "content":prompt
+                    }
+                ]
+            )
 
-        return resultado["message"]["content"]
+            return resultado["message"]["content"]
+        except Exception as exc:
+            print(f"⚠️ [Revisor] Erro ao acessar o modelo: {exc}")
+            # Retornar a resposta original como fallback
+            return resposta

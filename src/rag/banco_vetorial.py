@@ -13,15 +13,22 @@ class BancoVetorial:
         self.root_path = Path(__file__).resolve().parents[2]
         self.db_path = self.root_path / "bd_vetorial"
         self.db_path.mkdir(parents=True, exist_ok=True)
+        self.available = True
+        try:
+            self.client = chromadb.PersistentClient(
+                path=str(self.db_path)
+            )
 
-        self.client = chromadb.PersistentClient(
-            path=str(self.db_path)
-        )
-
-        self.collection = self.client.get_or_create_collection(
-            name="documentos",
-            metadata={"source": "data"}
-       )
+            self.collection = self.client.get_or_create_collection(
+                name="documentos",
+                metadata={"source": "data"}
+           )
+        except Exception as exc:
+            # Falha ao inicializar o Chroma — desabilitar busca vetorial
+            print(f"⚠️ Não foi possível inicializar o banco vetorial: {exc}")
+            self.available = False
+            self.client = None
+            self.collection = None
     def adicionar_documentos(self, documentos: List[str], ids: List[str]):
         self.collection.add(
             ids=ids,
@@ -29,10 +36,13 @@ class BancoVetorial:
         )
 
     def buscar(self, pergunta: str, top_k: int = 3) -> List[str]:
-        if self.collection.count() == 0:
+        if not self.available:
             return self._busca_textual(pergunta, top_k)
 
         try:
+            if self.collection.count() == 0:
+                return self._busca_textual(pergunta, top_k)
+
             resultados = self.collection.query(
                 query_texts=[pergunta],
                 n_results=top_k,

@@ -18,18 +18,28 @@ def main():
     while True:
 
         pergunta = input("\n👨‍🎓 Aluno: ")
+        if pergunta is None:
+            continue
+
+        pergunta = pergunta.strip()
 
         if pergunta.lower() == "sair":
             print("\n👋 Encerrando sistema...")
             break
 
+        if pergunta == "":
+            print("⚠️ Entrada inválida: digite uma pergunta ou 'sair' para encerrar.")
+            continue
+
         print("\n" + "=" * 60)
         print("🧠 INICIANDO FLUXO MULTIAGENTE")
         print("=" * 60)
 
-        decisao = planejador.decidir_fluxo(
-            pergunta
-        )
+        try:
+            decisao = planejador.decidir_fluxo(pergunta)
+        except Exception as exc:
+            print(f"⚠️ [Planejador] Erro ao decidir fluxo: {exc}")
+            continue
 
         print(
             f"📋 [Planejador] Fluxo escolhido: {decisao}"
@@ -41,10 +51,11 @@ def main():
                 "📝 [Planejador] Encaminhando para Avaliador"
             )
 
-            resposta = avaliador.gerar_exercicio(
-                pergunta,
-                ""
-            )
+            try:
+                resposta = avaliador.gerar_exercicio(pergunta, "")
+            except Exception as exc:
+                print(f"⚠️ [Avaliador] Erro durante a geração: {exc}")
+                resposta = "Desculpe — erro ao gerar exercício."
 
             print("\n")
             print(resposta)
@@ -55,21 +66,21 @@ def main():
                 "🎓 [Planejador] Encaminhando para Professor"
             )
 
-            resposta_professor = (
-                professor.responder(
-                    pergunta
-                )
-            )
+            try:
+                resposta_professor = professor.responder(pergunta)
+            except Exception as exc:
+                print(f"⚠️ [Professor] Erro durante resposta: {exc}")
+                resposta_professor = "Desculpe — erro interno ao responder."
 
             print(
                 "🔎 [Revisor] Revisando resposta..."
             )
 
-            resposta_final = (
-                revisor.revisar(
-                    resposta_professor
-                )
-            )
+            try:
+                resposta_final = revisor.revisar(resposta_professor)
+            except Exception as exc:
+                print(f"⚠️ [Revisor] Erro durante revisão: {exc}")
+                resposta_final = resposta_professor
 
             print(
                 "✅ [Revisor] Revisão concluída"

@@ -158,3 +158,75 @@ Observações:
 - Se desejar rodar testes que integrem o modelo real e o Chroma, execute-os manualmente após garantir
    que `ollama` e o banco vetorial estejam corretamente configurados.
 
+## Exemplo de sessão (transcrição)
+
+Exemplo de uma sessão típica no terminal:
+
+Aluno: O que é uma lista em Python?
+
+🧠 INICIANDO FLUXO MULTIAGENTE
+
+📋 [Planejador] Fluxo escolhido: DUVIDA
+🎓 [Planejador] Encaminhando para Professor
+
+🎓 [Professor] Analisando pergunta...
+📚 [Professor] Contexto recuperado
+🔎 [Revisor] Revisando resposta...
+✅ [Revisor] Revisão concluída
+
+📚 RESPOSTA FINAL
+
+Uma lista em Python é uma coleção ordenada e mutável de itens. Exemplo: [1, 2, 3].
+
+---
+
+Aluno: Quero um teste sobre listas
+
+🧠 INICIANDO FLUXO MULTIAGENTE
+
+📋 [Planejador] Fluxo escolhido: AVALIACAO
+📝 [Planejador] Encaminhando para Avaliador
+
+[Avaliador] Gerando exercício...
+
+1) O que retorna len([1, 2, 3])?
+A) 2
+B) 3
+C) 1
+D) 0
+
+Digite apenas a letra da resposta.
+
+---
+
+Observação: as respostas acima são exemplos; a saída real depende do modelo local e do conteúdo disponível na base vetorial.
+
+## Exemplo de mensagem/contrato MCP
+
+O projeto expõe tools MCP em `src/mcp/`. Abaixo um exemplo simplificado de como um agente pode solicitar
+uma tool de busca de material seguindo o contrato definido em `src/mcp/esquemas.py`:
+
+Exemplo de pedido (agent -> tool):
+
+{
+   "type": "tool_call",
+   "tool": "buscar_material",
+   "function": {
+      "name": "buscar_material",
+      "arguments": {"pergunta": "O que é lista em Python?"}
+   }
+}
+
+Exemplo de resposta (tool -> agent):
+
+{
+   "type": "tool_response",
+   "tool": "buscar_material",
+   "result": {
+      "documents": ["Uma lista em Python é...", "Exemplo: [1, 2, 3]"]
+   }
+}
+
+No repositório, `src/mcp/esquemas.py` define a assinatura esperada (`tool_busca_material`) e `src/mcp/tools.py`
+faz o roteamento para `AgenteRecuperador`.
+

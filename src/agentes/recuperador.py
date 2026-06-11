@@ -10,8 +10,15 @@ class AgenteRecuperador:
 
     def recuperar(self, pergunta):
 
-        contexto = self.banco.buscar(
-            pergunta
-        )
+        try:
+            contexto = self.banco.buscar(
+                pergunta
+            )
+        except Exception as exc:
+            print(f"⚠️ [{self.nome}] Erro ao buscar no banco vetorial: {exc}")
+            contexto = []
+
+        if not contexto:
+            return ""
 
         return "\n".join(contexto)

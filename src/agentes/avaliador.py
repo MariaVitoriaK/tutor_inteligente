@@ -11,7 +11,11 @@ class AgenteAvaliador:
 
     def gerar_exercicio(self, tema, contexto):
         if not contexto:
-            contexto = AgenteRecuperador().recuperar(tema)
+            try:
+                contexto = AgenteRecuperador().recuperar(tema)
+            except Exception as exc:
+                print(f"⚠️ [{self.nome}] Erro ao recuperar contexto: {exc}")
+                contexto = ""
 
         if not contexto:
             contexto = (
@@ -40,17 +44,23 @@ TEMA SOLICITADO:
 {tema}
 """
 
-        resposta = ollama.chat(
-            model=self.modelo,
-            messages=[
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ]
-        )
+        try:
+            resposta = ollama.chat(
+                model=self.modelo,
+                messages=[
+                    {
+                        "role": "user",
+                        "content": prompt
+                    }
+                ]
+            )
 
-        return resposta["message"]["content"]
+            return resposta["message"]["content"]
+        except Exception as exc:
+            print(f"⚠️ [{self.nome}] Erro ao gerar exercício: {exc}")
+            return (
+                "Desculpe — não foi possível gerar o exercício no momento."
+            )
 
     def corrigir_resposta(
         self,
@@ -91,14 +101,18 @@ Depois explique o motivo da correção.
 Informe também qual era a resposta correta.
 """
 
-        resposta = ollama.chat(
-            model=self.modelo,
-            messages=[
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ]
-        )
+        try:
+            resposta = ollama.chat(
+                model=self.modelo,
+                messages=[
+                    {
+                        "role": "user",
+                        "content": prompt
+                    }
+                ]
+            )
 
-        return resposta["message"]["content"]
+            return resposta["message"]["content"]
+        except Exception as exc:
+            print(f"⚠️ [{self.nome}] Erro ao corrigir resposta: {exc}")
+            return "Desculpe — não foi possível corrigir a resposta no momento."
