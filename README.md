@@ -18,6 +18,7 @@ O Tutor Inteligente é um sistema offline que combina:
 - interação por terminal em linguagem natural;
 - multiagentes com responsabilidades claras;
 - recuperação de contexto local por similaridade (RAG);
+- embeddings locais para indexação semântica dos documentos;
 - um banco vetorial persistente para documentos didáticos;
 - geração de exercícios e correção orientadas por contexto.
 
@@ -61,16 +62,17 @@ A aplicação está organizada em agentes com responsabilidades separadas:
 - `src/main.py` — ponto de entrada do sistema.
 - `src/agentes/` — implementação dos agentes.
 - `src/mcp/` — definições de ferramenta e esquema MCP.
-- `src/rag/` — ingestão e busca de contexto vetorial.
+- `src/rag/` — ingestão, armazenamento e recuperação de contexto via RAG.
 
 ## Funcionamento do Banco Vetorial
-O banco usa `chromadb.PersistentClient` para manter a coleção de documentos entre execuções.
+O projeto usa um pipeline RAG com embeddings locais e Chroma para recuperar contexto relevante durante as perguntas.
 
 - A base é criada em `bd_vetorial/`.
-- Os arquivos `*.txt` dentro de `data/` são divididos em chunks com `RecursiveCharacterTextSplitter`.
-- Cada chunk é indexado como documento no Chroma.
-- A consulta utiliza o texto da pergunta para recuperar os trechos mais relevantes.
-- Se o Chroma não estiver inicializado ou estiver vazio, o sistema cai para um fallback básico de busca textual.
+- Os arquivos `*.txt` dentro de `data/` são divididos em blocos com `RecursiveCharacterTextSplitter`.
+- Cada bloco é indexado no Chroma usando embeddings locais (`sentence-transformers`).
+- Em tempo de execução, o agente recuperador consulta o Chroma com a pergunta do aluno e retorna os trechos mais relevantes.
+- O `Professor` e o `Avaliador` usam esse contexto para gerar respostas ou criar exercícios mais precisos.
+- Se o Chroma não estiver disponível, o sistema usa um fallback de busca textual direto nos arquivos.
 
 ## Ingestão de Dados
 Execute:

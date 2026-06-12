@@ -2,3 +2,5 @@ ollama
 chromadb
 langchain
 mcp
+sentence-transformers
+pytest

@@ -32,6 +32,10 @@ def carregar_documentos():
 
     banco = BancoVetorial()
 
+    if not banco.available:
+        print("⚠️ O banco vetorial não está disponível; não é possível criar a base." )
+        return
+
     if banco.collection.count() == 0:
         ids = [str(i) for i in range(len(documentos))]
         banco.adicionar_documentos(documentos, ids)

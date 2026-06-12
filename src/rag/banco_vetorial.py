@@ -14,29 +14,38 @@ class BancoVetorial:
         self.db_path = self.root_path / "bd_vetorial"
         self.db_path.mkdir(parents=True, exist_ok=True)
         self.available = True
+
         try:
             self.client = chromadb.PersistentClient(
                 path=str(self.db_path)
             )
 
+            embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(
+                model_name="all-MiniLM-L6-v2"
+            )
+
             self.collection = self.client.get_or_create_collection(
                 name="documentos",
-                metadata={"source": "data"}
-           )
+                metadata={"source": "data"},
+                embedding_function=embedding_function
+            )
         except Exception as exc:
-            # Falha ao inicializar o Chroma — desabilitar busca vetorial
+            # Falha ao inicializar o Chroma ou o embedding local — desabilitar busca vetorial
             print(f"⚠️ Não foi possível inicializar o banco vetorial: {exc}")
             self.available = False
             self.client = None
             self.collection = None
     def adicionar_documentos(self, documentos: List[str], ids: List[str]):
+        if not self.available or self.collection is None:
+            raise RuntimeError("Banco vetorial indisponível para adicionar documentos")
+
         self.collection.add(
             ids=ids,
             documents=documentos
         )
 
     def buscar(self, pergunta: str, top_k: int = 3) -> List[str]:
-        if not self.available:
+        if not self.available or self.collection is None:
             return self._busca_textual(pergunta, top_k)
 
         try:

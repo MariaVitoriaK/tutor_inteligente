@@ -1,24 +1,16 @@
-from rag.banco_vetorial import BancoVetorial
+from rag.rag import RAG
 
 class AgenteRecuperador:
 
     def __init__(self):
-
         self.nome = "Recuperador"
-
-        self.banco = BancoVetorial()
+        self.rag = RAG()
 
     def recuperar(self, pergunta):
-
         try:
-            contexto = self.banco.buscar(
-                pergunta
-            )
+            contexto = self.rag.recuperar_contexto(pergunta)
         except Exception as exc:
-            print(f"⚠️ [{self.nome}] Erro ao buscar no banco vetorial: {exc}")
-            contexto = []
-
-        if not contexto:
+            print(f"⚠️ [{self.nome}] Erro ao recuperar contexto: {exc}")
             return ""
 
-        return "\n".join(contexto)
+        return contexto
