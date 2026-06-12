@@ -51,6 +51,7 @@ dist/
 .env.local
 .env.development
 .env.production
+.env
 
 tmp_chroma/
 tmp_chroma2/
