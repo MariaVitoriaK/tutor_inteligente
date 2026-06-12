@@ -1,5 +1,6 @@
 import ollama
 
+from config import Config
 from agentes.recuperador import AgenteRecuperador
 
 
@@ -7,7 +8,7 @@ class AgenteAvaliador:
 
     def __init__(self):
         self.nome = "Avaliador"
-        self.modelo = "llama3.2"
+        self.modelo = Config.MODEL_NAME
 
     def gerar_exercicio(self, tema, contexto):
         if not contexto:

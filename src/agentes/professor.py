@@ -1,5 +1,6 @@
 import ollama
 
+from config import Config
 from mcp.tools import buscar_material
 from mcp.esquemas import tool_busca_material
 
@@ -7,7 +8,7 @@ from mcp.esquemas import tool_busca_material
 class AgenteProfessor:
 
     def __init__(self):
-        self.modelo = "llama3.2"
+        self.modelo = Config.MODEL_NAME
 
     def responder(self, pergunta):
 

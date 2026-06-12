@@ -4,6 +4,7 @@ from typing import List
 
 import chromadb
 from chromadb.utils import embedding_functions
+from config import Config
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 
@@ -11,7 +12,7 @@ class BancoVetorial:
 
     def __init__(self):
         self.root_path = Path(__file__).resolve().parents[2]
-        self.db_path = self.root_path / "bd_vetorial"
+        self.db_path = self.root_path / Config.CHROMA_PATH
         self.db_path.mkdir(parents=True, exist_ok=True)
         self.available = True
 
@@ -21,11 +22,11 @@ class BancoVetorial:
             )
 
             embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(
-                model_name="all-MiniLM-L6-v2"
+                model_name=Config.EMBEDDING_MODEL
             )
 
             self.collection = self.client.get_or_create_collection(
-                name="documentos",
+                name=Config.COLLECTION_NAME,
                 metadata={"source": "data"},
                 embedding_function=embedding_function
             )

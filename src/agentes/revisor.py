@@ -1,10 +1,12 @@
 import ollama
 
+from config import Config
+
 class AgenteRevisor:
 
     def __init__(self):
 
-        self.modelo = "llama3.2"
+        self.modelo = Config.MODEL_NAME
 
     def revisar(
         self,

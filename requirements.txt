@@ -3,4 +3,5 @@ chromadb
 langchain
 mcp
 sentence-transformers
+python-dotenv
 pytest

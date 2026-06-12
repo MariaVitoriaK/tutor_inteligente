@@ -63,6 +63,8 @@ A aplicação está organizada em agentes com responsabilidades separadas:
 - `src/agentes/` — implementação dos agentes.
 - `src/mcp/` — definições de ferramenta e esquema MCP.
 - `src/rag/` — ingestão, armazenamento e recuperação de contexto via RAG.
+- `src/config/` — configuração centralizada do projeto e variáveis de ambiente.
+- `.env.example` — exemplo de configuração para o ambiente local.
 
 ## Funcionamento do Banco Vetorial
 O projeto usa um pipeline RAG com embeddings locais e Chroma para recuperar contexto relevante durante as perguntas.
@@ -99,6 +101,15 @@ Se a coleção já existir, ela não será recriada.
 pip install -r requirements.txt
 pip install langchain-text-splitters
 ```
+
+### Configuração opcional com variáveis de ambiente
+Copie o arquivo de exemplo `.env.example` para `.env` e ajuste os valores se necessário:
+
+```bash
+copy .env.example .env
+```
+
+O projeto carrega as configurações de modelo, embeddings e Chroma via `src/config/config.py`.
 
 ### Preparar o modelo local
 ```bash
