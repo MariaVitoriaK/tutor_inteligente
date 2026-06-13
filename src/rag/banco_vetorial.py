@@ -4,7 +4,7 @@ from typing import List
 
 import chromadb
 from chromadb.utils import embedding_functions
-from config import Config
+from src.config.config import Config
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 

@@ -1,7 +1,7 @@
-from agentes.planejador import AgentePlanejador
-from agentes.professor import AgenteProfessor
-from agentes.avaliador import AgenteAvaliador
-from agentes.revisor import AgenteRevisor
+from src.agentes.planejador import AgentePlanejador
+from src.agentes.professor import AgenteProfessor
+from src.agentes.avaliador import AgenteAvaliador
+from src.agentes.revisor import AgenteRevisor
 
 
 def main():

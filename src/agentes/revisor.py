@@ -1,6 +1,6 @@
 import ollama
 
-from config import Config
+from src.config.config import Config
 
 class AgenteRevisor:
 

@@ -1,4 +1,4 @@
-from rag.rag import RAG
+from src.rag.rag import RAG
 
 class AgenteRecuperador:
 

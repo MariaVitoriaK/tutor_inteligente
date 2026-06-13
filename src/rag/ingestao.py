@@ -6,7 +6,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 try:
     from banco_vetorial import BancoVetorial
 except ImportError:
-    from rag.banco_vetorial import BancoVetorial
+    from ..rag.banco_vetorial import BancoVetorial
 
 
 def carregar_documentos():

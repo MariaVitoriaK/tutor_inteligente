@@ -1,7 +1,7 @@
 import ollama
 
-from config import Config
-from agentes.recuperador import AgenteRecuperador
+from src.config.config import Config
+from src.agentes.recuperador import AgenteRecuperador
 
 
 class AgenteAvaliador:

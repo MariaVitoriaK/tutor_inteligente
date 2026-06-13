@@ -119,6 +119,8 @@ ollama pull llama3.2
 ### Gerar a base vetorial
 ```bash
 python src/rag/ingestao.py
+ou
+python -m src.rag.ingestao
 ```
 
 ### Executar o tutor

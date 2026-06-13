@@ -1,8 +1,8 @@
 import ollama
 
-from config import Config
-from mcp.tools import buscar_material
-from mcp.esquemas import tool_busca_material
+from src.config.config import Config
+from src.mcp.tools import buscar_material
+from src.mcp.esquemas import tool_busca_material
 
 
 class AgenteProfessor:
