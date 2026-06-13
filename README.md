@@ -168,8 +168,6 @@ Observações:
 
 - Os testes usam `monkeypatch` para substituir chamadas a `ollama.chat` e ao banco vetorial, portanto
    não precisam de um modelo local nem de um Chroma ativo para rodar.
-- Se desejar rodar testes que integrem o modelo real e o Chroma, execute-os manualmente após garantir
-   que `ollama` e o banco vetorial estejam corretamente configurados.
 
 ## Exemplo de sessão (transcrição)
 
@@ -183,13 +181,16 @@ Aluno: O que é uma lista em Python?
 🎓 [Planejador] Encaminhando para Professor
 
 🎓 [Professor] Analisando pergunta...
+🛠️ [Professor] Decidiu usar uma Tool
+🔍 [Professor] Buscando contexto para: O que é uma lista em Python?
 📚 [Professor] Contexto recuperado
+✅ [Professor] Resposta gerada
 🔎 [Revisor] Revisando resposta...
 ✅ [Revisor] Revisão concluída
 
 📚 RESPOSTA FINAL
 
-Uma lista em Python é uma coleção ordenada e mutável de itens. Exemplo: [1, 2, 3].
+Uma lista em Python é um tipo de sequência imutável, que armazena valores de forma ordenada. As listas são representadas por `[ ]` e permitem a inclusão de elementos individuais. No Python, as listas também suportam operações como inserção, exclusão e permutação de elementos.
 
 ---
 
@@ -202,17 +203,18 @@ Aluno: Quero um teste sobre listas
 
 [Avaliador] Gerando exercício...
 
-1) O que retorna len([1, 2, 3])?
-A) 2
-B) 3
-C) 1
-D) 0
+Segue aqui a questão de múltipla escolha sobre listas em Python:
+
+Qual é o propósito de uma lista em Python?
+
+A) Armazenar apenas valores numéricos
+B) Repetir código para execução automática
+C) Criar um conjunto de dados que pode ser acessado por índice ou chave
+D) Encerrar programas
 
 Digite apenas a letra da resposta.
 
 ---
-
-Observação: as respostas acima são exemplos; a saída real depende do modelo local e do conteúdo disponível na base vetorial.
 
 ## Exemplo de mensagem/contrato MCP
 
