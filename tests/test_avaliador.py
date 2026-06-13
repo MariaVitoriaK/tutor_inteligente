@@ -1,6 +1,6 @@
 import ollama
-from agentes.avaliador import AgenteAvaliador
-from agentes.recuperador import AgenteRecuperador
+from src.agentes.avaliador import AgenteAvaliador
+from src.agentes.recuperador import AgenteRecuperador
 
 
 def test_gerar_exercicio_com_recuperacao(monkeypatch):

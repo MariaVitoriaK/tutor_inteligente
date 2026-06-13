@@ -1,10 +1,10 @@
-from rag.rag import RAG
+from src.rag.rag import RAG
 
 
 def test_rag_recupera_contexto(monkeypatch):
     mock_trechos = ["Trecho 1 sobre listas", "Trecho 2 sobre loops"]
     monkeypatch.setattr(
-        "rag.banco_vetorial.BancoVetorial.buscar",
+        "src.rag.banco_vetorial.BancoVetorial.buscar",
         lambda self, pergunta, top_k=3: mock_trechos
     )
 

@@ -1,7 +1,7 @@
 import builtins
 import sys
 import ollama
-import rag.banco_vetorial as bv
+import src.rag.banco_vetorial as bv
 
 from importlib import reload
 

@@ -1,4 +1,4 @@
-from agentes.planejador import AgentePlanejador
+from src.agentes.planejador import AgentePlanejador
 
 
 def test_decidir_fluxo_avaliacao():

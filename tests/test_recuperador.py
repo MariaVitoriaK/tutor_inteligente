@@ -1,9 +1,9 @@
-import rag.banco_vetorial as bv
-from agentes.recuperador import AgenteRecuperador
+import src.rag.banco_vetorial as bv
+from src.agentes.recuperador import AgenteRecuperador
 
 
 def test_recuperador_retorna_contexto(monkeypatch):
-    monkeypatch.setattr(bv.BancoVetorial, 'buscar', lambda self, q: [' trecho1 ', 'trecho2'])
+    monkeypatch.setattr(bv.BancoVetorial, 'buscar', lambda self, q, top_k=3: [' trecho1 ', 'trecho2'])
 
     r = AgenteRecuperador()
     resultado = r.recuperar('qualquer pergunta')

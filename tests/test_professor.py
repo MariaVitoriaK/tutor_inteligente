@@ -2,9 +2,9 @@ import builtins
 import types
 
 import ollama
-import mcp.tools as tools
+import src.mcp.tools as tools
 
-from agentes.professor import AgenteProfessor
+from src.agentes.professor import AgenteProfessor
 
 
 def test_professor_usa_tool_e_responde(monkeypatch):

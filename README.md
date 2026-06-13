@@ -80,7 +80,7 @@ O projeto usa um pipeline RAG com embeddings locais e Chroma para recuperar cont
 Execute:
 
 ```bash
-python src/rag/ingestao.py
+python -m src.rag.ingestao
 ```
 
 Esse script:
@@ -161,7 +161,7 @@ pip install pytest
 2. Execute os testes a partir da raiz do repositório:
 
 ```bash
-pytest -q
+python -m pytest -q
 ```
 
 Observações:

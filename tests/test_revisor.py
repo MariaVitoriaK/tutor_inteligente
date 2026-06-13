@@ -1,5 +1,5 @@
 import ollama
-from agentes.revisor import AgenteRevisor
+from src.agentes.revisor import AgenteRevisor
 
 
 def test_revisor_retorna_mesma_resposta(monkeypatch):
