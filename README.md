@@ -22,12 +22,11 @@ O Tutor Inteligente é um sistema offline que combina:
 - um banco vetorial persistente para documentos didáticos;
 - geração de exercícios e correção orientadas por contexto.
 
-## O que mudou nesta versão
-- `src/rag/banco_vetorial.py` foi implementado para usar `chromadb.PersistentClient`.
-- O sistema agora cria uma coleção Chroma persistente em `bd_vetorial/`.
-- `src/rag/ingestao.py` foi tornado mais robusto para importar corretamente o repositório e detectar se a base já existe.
-- `src/agentes/avaliador.py` agora recupera contexto automaticamente antes de gerar exercícios, evitando respostas vazias.
-- Foi adicionado um fallback textual simples quando o banco vetorial estiver vazio ou não responder.
+## Justificativa da Arquitetura Multiagente
+
+A escolha por uma arquitetura multiagente se justifica pela necessidade de especialização e eficiência no ecossistema do tutor inteligente, superando as limitações de uma abordagem com agente único (single-agent). Dividir o sistema em papéis claros traz dois ganhos principais: otimização de recursos (tokens/tempo) e separação de preocupações (Separation of Concerns).
+
+Enquanto um único agente agiria de forma generalista e sobrecarregada, o Planejador atua como um roteador determinístico ágil, direcionando o fluxo e evitando o desperdício de tokens com buscas desnecessárias no banco vetorial (RAG) quando o aluno solicita apenas uma avaliação. Por sua vez, o Professor e o Avaliador focam estritamente na lógica pedagógica e no consumo de contexto, deixando a validação sintática e conceitual a cargo do Revisor, que funciona como uma camada isolada de controle de qualidade. Essa cooperação distribuída garante maior robustez ao modelo local (llama3.2), minimiza alucinações e eleva a precisão técnica das respostas entregues ao estudante.
 
 ## Arquitetura e Papéis dos Agentes
 A aplicação está organizada em agentes com responsabilidades separadas:
@@ -137,12 +136,6 @@ python -m src.main
 - A recuperação de contexto depende da base vetorial; se ela não estiver disponível, o tutor usa um fallback de busca textual.
 - O revisor é um passo de controle de qualidade, mas não altera o conteúdo original da resposta.
 
-## Possíveis melhorias futuras
-- adicionar testes automatizados para cada agente;
-- incluir suporte a mais formatos de conteúdo (PDF, Markdown);
-- tornar o fluxo de correção interativo com o aluno;
-- melhorar o fallback de busca para usar embeddings offline sem Ollama.
-
 ## Testes automatizados
 
 Este repositório agora inclui testes automatizados com `pytest` cobrindo:
@@ -213,7 +206,6 @@ C) Criar um conjunto de dados que pode ser acessado por índice ou chave
 D) Encerrar programas
 
 Digite apenas a letra da resposta.
-
 ---
 
 ## Exemplo de mensagem/contrato MCP
