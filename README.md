@@ -214,34 +214,3 @@ D) Encerrar programas
 
 Digite apenas a letra da resposta.
 
----
-
-## Exemplo de mensagem/contrato MCP
-
-O projeto expõe tools MCP em `src/mcp/`. Abaixo um exemplo simplificado de como um agente pode solicitar
-uma tool de busca de material seguindo o contrato definido em `src/mcp/esquemas.py`:
-
-Exemplo de pedido (agent -> tool):
-
-{
-   "type": "tool_call",
-   "tool": "buscar_material",
-   "function": {
-      "name": "buscar_material",
-      "arguments": {"pergunta": "O que é lista em Python?"}
-   }
-}
-
-Exemplo de resposta (tool -> agent):
-
-{
-   "type": "tool_response",
-   "tool": "buscar_material",
-   "result": {
-      "documents": ["Uma lista em Python é...", "Exemplo: [1, 2, 3]"]
-   }
-}
-
-No repositório, `src/mcp/esquemas.py` define a assinatura esperada (`tool_busca_material`) e `src/mcp/tools.py`
-faz o roteamento para `AgenteRecuperador`.
-
