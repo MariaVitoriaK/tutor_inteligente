@@ -19,17 +19,14 @@ class AgenteProfessor:
                 messages=[
                     {
                         "role": "system",
-                        "content": """
-                    Você é um professor especialista em Python.
-
-                    Sempre que precisar consultar
-                    materiais das aulas,
-                    utilize a ferramenta
-                    buscar_material.
-
-                    Se já souber responder,
-                    responda diretamente.
-                    """
+                        "content": (
+                            "Você é um professor universitário assistente e especialista na linguagem Python.\n\n"
+                            "DIRETRIZES DE ATUAÇÃO:\n"
+                            "1. Sempre que a dúvida do aluno envolver conceitos teóricos, sintaxe ou conteúdos "
+                            "das aulas, use obrigatoriamente a ferramenta 'buscar_material'.\n"
+                            "2. Só responda diretamente se for uma interação informal (ex: 'olá', 'tudo bem?') "
+                            "ou se a pergunta não tiver relação com tópicos de programação."
+                        )
                     },
                     {
                         "role": "user",
@@ -40,29 +37,20 @@ class AgenteProfessor:
             )
         except Exception as exc:
             print(f"⚠️ [Professor] Erro acessando o modelo local: {exc}")
-            return (
-                "Desculpe — não foi possível acessar o modelo local no momento."
-            )
+            return "Desculpe — não foi possível acessar o modelo local no momento."
 
         mensagem = primeira_resposta["message"]
 
         if mensagem.get("tool_calls"):
 
             print("🛠️ [Professor] Decidiu usar uma Tool")
-
             tool_call = mensagem["tool_calls"][0]
-
             argumentos = tool_call["function"]["arguments"]
 
-            print(
-                f"🔍 [Professor] Buscando contexto para: "
-                f"{argumentos['pergunta']}"
-            )
+            print(f"🔍 [Professor] Buscando contexto para: {argumentos['pergunta']}")
 
             try:
-                contexto = buscar_material(
-                    argumentos["pergunta"]
-                )
+                contexto = buscar_material(argumentos["pergunta"])
             except Exception as exc:
                 print(f"⚠️ [Professor] Erro ao recuperar contexto: {exc}")
                 contexto = ""
@@ -75,21 +63,17 @@ class AgenteProfessor:
                     messages=[
                         {
                             "role": "system",
-                            "content": f"""
-                        Você é um professor de Python.
-                        
-                        Responda SOMENTE usando o contexto fornecido.
-                        
-                        Se a resposta não estiver no contexto,
-                        diga:
-                        
-                        "Não encontrei essa informação
-                        na base de conhecimento."
-                        
-                        CONTEXTO:
-                        
-                        {contexto}
-                        """
+                            "content": (
+                                "Você é um professor especialista em Python focado em precisão técnica e didática.\n\n"
+                                "[REGRAS CRÍTICAS DE RESPOSTA]:\n"
+                                "1. Baseie sua resposta EXCLUSIVAMENTE nas informações fornecidas no [CONTEXTO] abaixo.\n"
+                                "2. Jamais invente fatos ou inverta conceitos. Lembre-se: em Python, listas e dicionários "
+                                "são MUTÁVEIS; tuplas e strings são IMUTÁVEIS.\n"
+                                "3. Se o [CONTEXTO] fornecido estiver em branco ou não contiver dados suficientes para responder "
+                                "à pergunta do aluno de forma completa, responda exatamente e apenas com a frase:\n"
+                                "'Não encontrei essa informação na base de conhecimento.'\n\n"
+                                f"[CONTEXTO]:\n{contexto}"
+                            )
                         },
                         {
                             "role": "user",
@@ -102,9 +86,7 @@ class AgenteProfessor:
                 return "Desculpe — erro ao gerar resposta baseada no contexto."
 
             print("✅ [Professor] Resposta gerada")
-
             return resposta_final["message"]["content"]
 
         print("💡 [Professor] Não precisou usar Tool")
-
         return mensagem["content"]
