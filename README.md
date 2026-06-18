@@ -3,7 +3,7 @@
 # Trabalho Final: Tutor Inteligente Multiagente com LLM Local
 
 ## 👥 Integrantes do Grupo
-* Maria Vitória Kuhn - 197960
+* Maria Vitória Kuhn - 197960 (Fiz o trabalho sozinha)
 
 ## Descrição do Problema
 Estudantes de programação enfrentam dificuldades ao estudar fora do horário de aula:
@@ -236,3 +236,25 @@ Exemplo de resposta (tool -> agent):
 
 No repositório, `src/mcp/esquemas.py` define a assinatura esperada (`tool_busca_material`) e `src/mcp/tools.py`
 faz o roteamento para `AgenteRecuperador`.
+
+---
+
+## Reflexão Crítica sobre o Projeto
+
+O desenvolvimento deste Tutor Inteligente proporcionou um aprendizado profundo sobre os desafios reais da implementação de sistemas baseados em LLMs locais. Abaixo, destaquei os principais pontos de reflexão estruturados ao longo do projeto:
+
+1. **Engenharia de Prompt para Modelos Locais (LLaMA 3.2):**
+Um dos maiores desafios foi lidar com a tendência de modelos menores à alucinação e à "desobediência" de restrições rígidas. Observamos que o modelo, por vezes, trazia conhecimentos prévios errôneos (como inverter a mutabilidade de listas e tuplas em Python) ou ignorava a instrução de usar apenas o contexto do RAG. A solução exigiu uma arquitetura de prompts muito mais rigorosa, separando claramente o papel do sistema (`system`) da entrada do usuário (`user`), e impondo o uso de delimitadores explícitos (`[CONTEXTO]`, `[REGRAS]`).
+2. **O Papel Essencial da Arquitetura Multiagente:**
+Inicialmente, pensar em múltiplos agentes para um problema de "Perguntas e Respostas" pode parecer excessivo, mas na prática, a divisão de responsabilidades provou-se indispensável. Ao isolar a validação sintática no agente **Revisor**, evitamos sobrecarregar o **Professor** com regras gramaticais. Da mesma forma, o **Planejador** atua como um "escudo", poupando o custo computacional (e o tempo de inferência) de buscar informações no banco vetorial quando o aluno quer apenas gerar um exercício (acionando o **Avaliador**). Isso tornou o sistema significativamente mais ágil.
+
+
+3. **Trade-offs de uma Solução 100% Local e Offline:**
+A exigência de rodar localmente  revelou o balanço entre privacidade/independência e infraestrutura. Por um lado, o sistema garante total privacidade dos dados do aluno e funciona sem custos de API ou dependência de internet. Por outro lado, a latência de geração de respostas e a qualidade do *reasoning* (raciocínio) são diretamente limitadas pelo hardware da máquina onde o Ollama é executado. A implementação do *fallback textual* para o caso de falha do banco vetorial Chroma foi uma medida necessária para garantir a resiliência do software.
+
+
+4. **Padronização com MCP:**
+A adoção do *Model Context Protocol* (MCP) adicionou uma camada de complexidade inicial à arquitetura, exigindo a formatação de contratos estritos de entrada e saída. Contudo, essa abstração garantiu que a ferramenta de busca (`buscar_material`) se tornasse agnóstica ao agente que a chama, facilitando futuras expansões do sistema sem a necessidade de reescrever a lógica de integração.
+
+
+
