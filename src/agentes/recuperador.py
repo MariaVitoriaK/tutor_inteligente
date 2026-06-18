@@ -4,13 +4,26 @@ class AgenteRecuperador:
 
     def __init__(self):
         self.nome = "Recuperador"
-        self.rag = RAG()
+        try:
+            self.rag = RAG()
+        except Exception as exc:
+            print(f"⚠️ [{self.nome}] Erro ao inicializar o motor RAG: {exc}")
+            self.rag = None
 
     def recuperar(self, pergunta):
-        try:
-            contexto = self.rag.recuperar_contexto(pergunta)
-        except Exception as exc:
-            print(f"⚠️ [{self.nome}] Erro ao recuperar contexto: {exc}")
+        if not self.rag:
+            print(f"⚠️ [{self.nome}] RAG indisponível. Ativando fallback textual direto.")
             return ""
 
-        return contexto
+        try:
+            contexto = self.rag.recuperar_contexto(pergunta)
+            
+            # Garante que o retorno seja limpo e tratável
+            if not contexto or not str(contexto).strip():
+                return ""
+                
+            return contexto
+            
+        except Exception as exc:
+            print(f"⚠️ [{self.nome}] Erro crítico durante a recuperação vetorial: {exc}")
+            return ""
